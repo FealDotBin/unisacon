@@ -20,20 +20,20 @@ contract Ticket is ERC20 {
     }
 
     function buyTicket(address ticketVIPAddress) payable external {
-        // check if there is any ticket left
+        // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
-        // check if the sender has already purchased a ticket or a VIP ticket
+        // check if the sender has already purchased a ticket
         require(balanceOf(tx.origin) == 0, "You've already purchased a ticket!");
+
+        // check if the sender has already purchased a VIP ticket
         TicketVIP ticketVIP = TicketVIP(ticketVIPAddress);
-        require(!ticketVIP.verifyTicket(), "The sender already owns a VIP ticket!");
+        require(!ticketVIP.verifyTicket(), "You've already purchased a VIP ticket!");
 
         // check if sender has enough money
-        //require(msg.value == ticketPrice, "Not enough money!"); 
+        require(msg.value == ticketPrice, "Not enough money!"); 
 
-        // // Transfer the ticket price from sender to the contract and the ticket
-        // address payable contractAddress = payable(address(this));
-        // contractAddress.transfer(ticketPrice);
+        // transfer the ticket to the sender
         _transfer(address(this), tx.origin, 1);
     }
 
@@ -49,5 +49,4 @@ contract Ticket is ERC20 {
         return balanceOf(tx.origin) == 1;
     }
 
-    // TODO: function to withdraw money
 }

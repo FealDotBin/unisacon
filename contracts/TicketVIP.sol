@@ -21,28 +21,28 @@ contract TicketVIP is ERC20 {
     }
 
     function buyTicket(address ticketAddress) external payable {
-        // check if there is any ticket left
+        // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
-        // check if the sender has already purchased a VIP ticker or a ticket
+        // check if the sender has already purchased a VIP ticket
         require(balanceOf(tx.origin) == 0, "You've already purchased a VIP ticket!");
+
+        // check if the sender has already purchased a ticket
         Ticket ticket = Ticket(ticketAddress);
-        require(!ticket.verifyTicket(), "The sender already owns a ticket!");
+        require(!ticket.verifyTicket(), "You've already purchased a ticket!");
 
         // check if sender has enough money
         require(msg.value == ticketPrice, "Not enough money!"); 
         
-        // Transfer the ticket price from sender to the contract and the ticket
-        address payable contractAddress = payable(address(this));
-        contractAddress.transfer(ticketPrice);
+        // transfer the ticket to the sender
         _transfer(address(this), tx.origin, 1);
     }
 
     function upgradeTicket(address ticketAddress) external payable {
-        // check if there is any ticket left
+        // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
-        // check if the sender has already purchased a ticket
+        // check if the sender has already purchased a VIP ticket
         require(balanceOf(tx.origin) == 0, "You've already purchased a VIP ticket!");
     
         // check if sender has enough money
@@ -50,18 +50,15 @@ contract TicketVIP is ERC20 {
 
         // check if the sender owns a basic ticket. In that case, give it back to the contract
         Ticket ticket = Ticket(ticketAddress);
-        require(ticket.verifyTicket(), "The sender doesn't own a basic ticket!");
+        require(ticket.verifyTicket(), "You don't have a basic ticket!");
         ticket.giveBackTicket();
 
-        // // Transfer the ticket price from sender to the contract and give the VIP ticket to sender
-        // address payable contractAddress = payable(address(this));
-        // contractAddress.transfer(upgradePrice);
+        // transfer the ticket to the sender
         _transfer(address(this), tx.origin, 1);
     }
 
     function verifyTicket() external view returns (bool) {
         return balanceOf(tx.origin) == 1;
     }
-
-    // TODO: function to withdraw money
+    
 }

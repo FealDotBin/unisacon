@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unisacon | Tickets</title>
+  <!-- Link to Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Link to Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <style>
+    /* Your shared CSS styles */
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #F0F2F5;
+    }
+
+    .ticket-section {
+      padding: 100px 0;
+      text-align: center;
+      background-color: #192A56; /* Deep Blue */
+      color: white;
+    }
+
+    .ticket-section h2 {
+      font-size: 3.5rem;
+      margin-bottom: 40px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .ticket-description {
+      font-size: 1.2rem;
+      color: #AEB6BF; /* Light Grey */
+      margin-bottom: 60px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .ticket-button {
+      background-color: #E74C3C; /* Red */
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .ticket-button:hover {
+      background-color: #CF3527; /* Slightly Darker Red */
+    }
+
+    .ticket-options {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 20px;
+    }
+
+    .ticket-benefits {
+      padding: 120px 0;
+      background-color: #ECF0F1; /* Light Gray */
+      color: #333; /* Dark Grey */
+    }
+
+    .benefit-card {
+      background-color: #FFFFFF; /* White */
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .benefit-card h3 {
+      color: #333; /* Dark Grey */
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .benefit-card p {
+      color: #6C757D; /* Soft Grey */
+      font-size: 1.2rem;
+    }
+
+    .ticket-image {
+      width: 100%;
+      max-height: 200px;
+      max-width: 200px;
+    }
+
+    /* Your footer styles (from index.html) */
+    .footer {
+      background-color: #333;
+      color: white;
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="ticket-section">
+  <div class="container">
+    <h2>Your Tickets</h2>
+    <img src="./img/noticket.png" alt="Ticket Image" class="ticket-image" id="ticket-image">
+    <div class="ticket-description">
+      <p id="ticket-description">Unlock an unforgettable experience by choosing the perfect ticket for you!</p>
+    </div>
+    <div class="ticket-options">
+      <button class="btn ticket-button" id="buy-ticket-button">Buy Regular Ticket</button>
+      <button class="btn ticket-button" id="buy-ticket-vip-button">Buy VIP Ticket</button>
+      <button class="btn ticket-button" id="upgrade-ticket-button" style="display:none">
+        <i class="fas fa-star"></i> Upgrade Ticket
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="ticket-benefits">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="benefit-card">
+          <h3>Ticket Benefits</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="benefit-card">
+                <h3>Regular Ticket</h3>
+                <p>Experience the excitement with access to all event areas and panels.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="benefit-card">
+                <h3>VIP Ticket</h3>
+                <p>Upgrade to VIP for exclusive access, priority seating, and special perks.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Your footer section (from index.html) -->
+<div class="footer">
+  <div class="container">
+    <p>&copy; 2077 Unisacon. All rights reserved.</p>
+  </div>
+</div>
+
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <!-- Include all compiled plugins (below), or include individual files as needed -->
+ <script src="js/bootstrap.min.js"></script>
+ <script src="js/web3.min.js"></script>
+ <script src="js/truffle-contract.js"></script>
+ <script src="js/app.js"></script>
+</body>
+</html>
