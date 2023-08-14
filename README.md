@@ -1,4 +1,4 @@
-# unisacon
+# Unisacon
 Project for 'Sicurezza dei dati' exam.
 
 ## What is this
