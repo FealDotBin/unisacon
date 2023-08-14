@@ -48,9 +48,11 @@ contract TicketVIP is ERC20 {
         // check if sender has enough money
         require(msg.value == upgradePrice, "Not enough money!");
 
-        // check if the sender owns a basic ticket. In that case, give it back to the contract
+        // check if the sender owns a regular ticket.
         Ticket ticket = Ticket(ticketAddress);
-        require(ticket.verifyTicket(), "You don't have a basic ticket!");
+        require(ticket.verifyTicket(), "You don't have a regular ticket!");
+
+        // give back the regular ticket to the Ticket.sol contract
         ticket.giveBackTicket();
 
         // transfer the ticket to the sender
