@@ -2,7 +2,7 @@
 Project for 'Sicurezza dei dati' exam.
 
 ## What is this
-The project consist in a hypothetical ticket selling service for the 'unisacon': a local comic-con hosted by unisa (università degli studi di salerno).
+The project consist in a hypothetical ticket selling service for the 'UnisaCon': a local Comic-Con hosted by Unisa (Università degli Studi di Salerno).
 
 That's all folks!
 
