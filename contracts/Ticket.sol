@@ -28,32 +28,38 @@ contract Ticket is ERC20 {
     }
 
     function buyTicket() payable external {
+        require(msg.sender == tx.origin, "Only EOA can call function!");
+
         // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
         // check if the sender has already purchased a ticket
-        require(balanceOf(tx.origin) == 0, "You've already purchased a ticket!");
+        require(balanceOf(msg.sender) == 0, "You've already purchased a ticket!");
 
         // check if the sender has already purchased a VIP ticket
-        require(!ticketVIP.verifyTicket(), "You've already purchased a VIP ticket!");
+        require(!ticketVIP.verifyTicket(msg.sender), "You've already purchased a VIP ticket!");
 
         // check if sender has enough money
         require(msg.value == ticketPrice, "Not enough money!"); 
 
         // transfer the ticket to the sender
-        _transfer(address(this), tx.origin, 1);
+        _transfer(address(this), msg.sender, 1);
     }
 
-    function giveBackTicket() external {
-        // check if the sender owns a ticket
-        require(balanceOf(tx.origin) != 0, "You don't own any ticket!");
+    function giveBackTicket(address _address) external {
+        require(msg.sender == address(ticketVIP)); // only ticketVIP contract can call this function
+
+        // check if _address owns a ticket
+        require(balanceOf(_address) != 0, "You don't own any ticket!");
 
         // give back the ticket to the contract
-        _transfer(tx.origin, address(this), 1);
+        _transfer(_address, address(this), 1);
     }
 
-    function verifyTicket() external view returns (bool) {
-        return balanceOf(tx.origin) == 1;
+    function verifyTicket(address _address) external view returns (bool) {
+        require(msg.sender == address(ticketVIP) || msg.sender == _address); // only ticketVIP contract or _address can call this function
+
+        return balanceOf(_address) == 1;
     }
 
 }

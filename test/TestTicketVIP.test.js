@@ -127,7 +127,7 @@ contract("Test Ticket VIP", (accounts) => {
         );
 
         // verify ticket and get contract balance
-        hasTicket = await ticketVIP.verifyTicket({from: accounts[0]});
+        hasTicket = await ticketVIP.verifyTicket(accounts[0], {from: accounts[0]});
         currentBalance = await web3.eth.getBalance(ticketVIP.address);
 
         assert.equal(hasTicket, expectedHasTicket, "account[0] should own a ticket");
@@ -247,7 +247,7 @@ contract("Test Ticket VIP", (accounts) => {
         );
 
         // verify ticket and get contract balance
-        hasTicket = await ticketVIP.verifyTicket({from: accounts[0]});
+        hasTicket = await ticketVIP.verifyTicket(accounts[0], {from: accounts[0]});
         currentBalance = await web3.eth.getBalance(ticketVIP.address);
 
         assert.equal(hasTicket, expectedHasTicket, "account[0] should own a ticket");

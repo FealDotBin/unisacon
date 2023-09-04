@@ -29,44 +29,50 @@ contract TicketVIP is ERC20 {
     }
 
     function buyTicket() external payable {
+        require(msg.sender == tx.origin, "Only EOA can call function!");
+
         // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
         // check if the sender has already purchased a VIP ticket
-        require(balanceOf(tx.origin) == 0, "You've already purchased a VIP ticket!");
+        require(balanceOf(msg.sender) == 0, "You've already purchased a VIP ticket!");
 
         // check if the sender has already purchased a ticket
-        require(!ticket.verifyTicket(), "You've already purchased a ticket!");
+        require(!ticket.verifyTicket(msg.sender), "You've already purchased a ticket!");
 
         // check if sender has enough money
         require(msg.value == ticketPrice, "Not enough money!"); 
         
         // transfer the ticket to the sender
-        _transfer(address(this), tx.origin, 1);
+        _transfer(address(this), msg.sender, 1);
     }
 
     function upgradeTicket() external payable {
+        require(msg.sender == tx.origin, "Only EOA can call function!");
+
         // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
         // check if the sender has already purchased a VIP ticket
-        require(balanceOf(tx.origin) == 0, "You've already purchased a VIP ticket!");
+        require(balanceOf(msg.sender) == 0, "You've already purchased a VIP ticket!");
     
         // check if sender has enough money
         require(msg.value == upgradePrice, "Not enough money!");
 
         // check if the sender owns a regular ticket.
-        require(ticket.verifyTicket(), "You don't have a regular ticket!");
+        require(ticket.verifyTicket(msg.sender), "You don't have a regular ticket!");
 
         // give back the regular ticket to the Ticket.sol contract
-        ticket.giveBackTicket();
+        ticket.giveBackTicket(msg.sender);
 
         // transfer the ticket to the sender
-        _transfer(address(this), tx.origin, 1);
+        _transfer(address(this), msg.sender, 1);
     }
 
-    function verifyTicket() external view returns (bool) {
-        return balanceOf(tx.origin) == 1;
+    function verifyTicket(address _address) external view returns (bool) {
+        require(msg.sender == address(ticket) || msg.sender == _address); // only ticket contract or _address can call this function
+
+        return balanceOf(_address) == 1;
     }
     
 }

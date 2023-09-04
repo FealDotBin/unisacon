@@ -120,7 +120,7 @@ contract("Test Ticket", (accounts) => {
         );
 
         // verify ticket and get contract balance
-        hasTicket = await ticket.verifyTicket({from: accounts[0]});
+        hasTicket = await ticket.verifyTicket(accounts[0], {from: accounts[0]});
         currentBalance = await web3.eth.getBalance(ticket.address);
 
         assert.equal(hasTicket, expectedHasTicket, "account[0] should own a ticket");
@@ -134,7 +134,7 @@ contract("Test Ticket", (accounts) => {
         
         // try to give back a ticket without owning one
         try {
-            await ticket.giveBackTicket({from: accounts[0]});
+            await ticket.giveBackTicket(accounts[0], {from: accounts[0]});
         } catch (error) {
             let contained = error.message.includes(expectedError) ? true : undefined;
             chai.should().exist(contained);
@@ -152,10 +152,10 @@ contract("Test Ticket", (accounts) => {
         );
 
         // give back the ticket
-        await ticket.giveBackTicket({from: accounts[0]});
+        await ticket.giveBackTicket(accounts[0], {from: accounts[0]});
 
         // verify you don't have the ticket 
-        hasTicket = await ticket.verifyTicket({from: accounts[0]});
+        hasTicket = await ticket.verifyTicket(accounts[0], {from: accounts[0]});
         assert.equal(hasTicket, expectedHasTicket, "accounts[0] shouldn't own a ticket");
 
     });

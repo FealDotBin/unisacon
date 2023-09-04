@@ -192,7 +192,7 @@ App = {
       App.contracts.Ticket.deployed().then(function(instance) {
         TicketInstance = instance;
 
-        return TicketInstance.verifyTicket({from: account});
+        return TicketInstance.verifyTicket(account, {from: account});
       }).then(function(result) {
         if(result) {
           $('#ticket-image').attr('src', 'img/ticket-regular.png');
@@ -209,7 +209,7 @@ App = {
       App.contracts.TicketVIP.deployed().then(function(instance) {
         TicketVIPInstance = instance;
 
-        return TicketVIPInstance.verifyTicket({from: account});
+        return TicketVIPInstance.verifyTicket(account, {from: account});
       }).then(function(result) {
         if(result) {
           $('#ticket-image').attr('src', 'img/ticket-vip.png');
