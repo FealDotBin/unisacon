@@ -10,6 +10,8 @@ contract("Test Ticket", (accounts) => {
     beforeEach('should setup the contract instance', async () => {
         ticket = await Ticket.new('Ticket', 'tickets', 2);
         ticketVIP = await TicketVIP.new('TicketVIP', 'ticketsVIP', 2);
+        await ticket.setTicketVIP(ticketVIP.address);
+        await ticketVIP.setTicket(ticket.address);
     });
 
     // try to buy a ticket out of stock
@@ -17,18 +19,15 @@ contract("Test Ticket", (accounts) => {
         const expectedError = "No tickets left!";
 
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[0], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
         );
         
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[1], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
         );
         
         try {
             await ticket.buyTicket(
-                ticketVIP.address,
                 {from: accounts[2], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -45,7 +44,6 @@ contract("Test Ticket", (accounts) => {
         // buy 1 ticket
         try { 
             await ticket.buyTicket(
-                ticketVIP.address,
                 {from: accounts[0], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -56,7 +54,6 @@ contract("Test Ticket", (accounts) => {
         // buy 1 ticket
         try {
             await ticket.buyTicket(
-                ticketVIP.address,
                 {from: accounts[0], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -71,14 +68,12 @@ contract("Test Ticket", (accounts) => {
         
         // buy a VIP ticket
         await ticketVIP.buyTicket(
-            ticket.address,
             {from: accounts[0], value: web3.utils.toWei('0.0059', 'ether'), gas: 100000}
         );
 
         // try to buy a regular ticket
         try {
             await ticket.buyTicket(
-                ticketVIP.address,
                 {from: accounts[0], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -94,7 +89,6 @@ contract("Test Ticket", (accounts) => {
         // try to buy using less money
         try {
             await ticket.buyTicket(
-                ticketVIP.address,
                 {from: accounts[0], value: web3.utils.toWei('0.002', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -105,7 +99,6 @@ contract("Test Ticket", (accounts) => {
         // try to buy using more money
         try {
             await ticket.buyTicket(
-                ticketVIP.address,
                 {from: accounts[0], value: web3.utils.toWei('0.004', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -123,7 +116,6 @@ contract("Test Ticket", (accounts) => {
 
         // buy 1 ticket
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[0], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
         );
 
@@ -156,7 +148,6 @@ contract("Test Ticket", (accounts) => {
 
         // buy 1 ticket
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[0], value: web3.utils.toWei('0.003', 'ether'), gas: 100000}
         );
 

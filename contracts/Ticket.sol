@@ -6,6 +6,8 @@ import "../contracts/TicketVIP.sol";
 
 contract Ticket is ERC20 {
 
+    address private owner;
+    TicketVIP ticketVIP;
     uint256 private ticketPrice = 3000000000000000; // 0.0030 ETH in Wei
     
     constructor(
@@ -13,13 +15,19 @@ contract Ticket is ERC20 {
         string memory symbol,
         uint256 initialSupply) ERC20(name, symbol) {
         _mint(address(this), initialSupply);
+        owner = msg.sender;
     }
-
+    
     function decimals() public view virtual override returns (uint8) {
         return 0;
     }
 
-    function buyTicket(address ticketVIPAddress) payable external {
+    function setTicketVIP(address ticketVIPAddress) external {
+        require(msg.sender == owner);
+        ticketVIP = TicketVIP(ticketVIPAddress);
+    }
+
+    function buyTicket() payable external {
         // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
@@ -27,7 +35,6 @@ contract Ticket is ERC20 {
         require(balanceOf(tx.origin) == 0, "You've already purchased a ticket!");
 
         // check if the sender has already purchased a VIP ticket
-        TicketVIP ticketVIP = TicketVIP(ticketVIPAddress);
         require(!ticketVIP.verifyTicket(), "You've already purchased a VIP ticket!");
 
         // check if sender has enough money

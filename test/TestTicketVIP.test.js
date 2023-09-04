@@ -14,6 +14,8 @@ contract("Test Ticket VIP", (accounts) => {
     beforeEach('should setup the contract instance', async () => {
         ticket = await Ticket.new('Ticket', 'tickets', 2);
         ticketVIP = await TicketVIP.new('TicketVIP', 'ticketsVIP', 2);
+        await ticket.setTicketVIP(ticketVIP.address);
+        await ticketVIP.setTicket(ticket.address);
     });
 
     // try to buy a ticket out of stock
@@ -22,20 +24,17 @@ contract("Test Ticket VIP", (accounts) => {
 
         // buy 1 VIP ticket
         await ticketVIP.buyTicket(
-            ticket.address,
             {from: accounts[0], value: ticketVIPPrice, gas: 100000}
         );
         
         // buy 1 VIP ticket
         await ticketVIP.buyTicket(
-            ticket.address,
             {from: accounts[1], value: ticketVIPPrice, gas: 100000}
         );
         
         // try to buy 1 VIP ticket
         try {
             await ticketVIP.buyTicket(
-                ticket.address,
                 {from: accounts[2], value: ticketVIPPrice, gas: 100000}
             );
         } catch (error) {
@@ -52,7 +51,6 @@ contract("Test Ticket VIP", (accounts) => {
         // buy 1 ticket
         try { 
             await ticketVIP.buyTicket(
-                ticket.address,
                 {from: accounts[0], value: ticketVIPPrice, gas: 100000}
             );
         } catch (error) {
@@ -63,7 +61,6 @@ contract("Test Ticket VIP", (accounts) => {
         // buy 1 ticket
         try {
             await ticketVIP.buyTicket(
-                ticket.address,
                 {from: accounts[0], value: ticketVIPPrice, gas: 100000}
             );
         } catch (error) {
@@ -78,14 +75,12 @@ contract("Test Ticket VIP", (accounts) => {
         
         // buy a regular ticket 
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[0], value: ticketPrice, gas: 100000}
         );
 
         // try to buy a VIP ticket
         try {
             await ticketVIP.buyTicket(
-                ticket.address,
                 {from: accounts[0], value: ticketVIPPrice, gas: 100000}
             );
         } catch (error) {
@@ -101,7 +96,6 @@ contract("Test Ticket VIP", (accounts) => {
         // try to buy using less money
         try {
             await ticketVIP.buyTicket(
-                ticket.address,
                 {from: accounts[0], value: web3.utils.toWei('0.002', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -112,7 +106,6 @@ contract("Test Ticket VIP", (accounts) => {
         // try to buy using more money
         try {
             await ticketVIP.buyTicket(
-                ticket.address,
                 {from: accounts[0], value: web3.utils.toWei('0.008', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -130,7 +123,6 @@ contract("Test Ticket VIP", (accounts) => {
 
         // buy 1 ticket
         await ticketVIP.buyTicket(
-            ticket.address,
             {from: accounts[0], value: ticketVIPPrice, gas: 100000}
         );
 
@@ -148,26 +140,22 @@ contract("Test Ticket VIP", (accounts) => {
         
         // buy 1 VIP ticket
         await ticketVIP.buyTicket(
-            ticket.address,
             {from: accounts[0], value: ticketVIPPrice, gas: 100000}
         );
         
         // buy 1 VIP ticket
         await ticketVIP.buyTicket(
-            ticket.address,
             {from: accounts[1], value: ticketVIPPrice, gas: 100000}
         );
 
         // buy 1 regular ticket 
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[2], value: ticketPrice, gas: 100000}
         );
 
         // try to upgrade a regular ticket
         try {
             await ticketVIP.upgradeTicket(
-                ticket.address,
                 {from: accounts[2], value: ticketUpgradePrice, gas: 100000}
             );
         } catch(error) {
@@ -182,14 +170,12 @@ contract("Test Ticket VIP", (accounts) => {
         
         // buy 1 VIP ticket
         await ticketVIP.buyTicket(
-            ticket.address,
             {from: accounts[0], value: ticketVIPPrice, gas: 100000}
         );
 
         // try to upgrade a regular ticket (which you don't have)
         try {
             await ticketVIP.upgradeTicket(
-                ticket.address,
                 {from: accounts[0], value: ticketUpgradePrice, gas: 100000}
             );
         } catch(error) {
@@ -204,14 +190,12 @@ contract("Test Ticket VIP", (accounts) => {
         
         // buy 1 regular ticket 
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[0], value: ticketPrice, gas: 100000}
         );
 
         // try to upgrade using less money
         try {
             await ticketVIP.upgradeTicket(
-                ticket.address,
                 {from: accounts[0], value: web3.utils.toWei('0.002', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -222,7 +206,6 @@ contract("Test Ticket VIP", (accounts) => {
         // try to upgrade using more money
         try {
             await ticketVIP.upgradeTicket(
-                ticket.address,
                 {from: accounts[0], value: web3.utils.toWei('0.008', 'ether'), gas: 100000}
             );
         } catch (error) {
@@ -238,7 +221,6 @@ contract("Test Ticket VIP", (accounts) => {
         // try to upgrade your non-existent ticket
         try {
             await ticketVIP.upgradeTicket(
-                ticket.address,
                 {from: accounts[0], value: ticketUpgradePrice, gas: 100000}
             );
         } catch (error) {
@@ -256,13 +238,11 @@ contract("Test Ticket VIP", (accounts) => {
 
         // buy 1 regular ticket
         await ticket.buyTicket(
-            ticketVIP.address,
             {from: accounts[0], value: ticketPrice, gas: 100000}
         );
 
         // upgrade your regular ticket
         await ticketVIP.upgradeTicket(
-            ticket.address,
             {from: accounts[0], value: ticketUpgradePrice, gas: 100000}
         );
 

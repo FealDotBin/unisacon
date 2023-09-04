@@ -6,6 +6,8 @@ import "../contracts/Ticket.sol";
 
 contract TicketVIP is ERC20 {
 
+    address owner;
+    Ticket ticket;
     uint256 private ticketPrice = 5900000000000000; // 0.0059 ETH in Wei
     uint256 private upgradePrice = 2900000000000000; // 0.0029 ETH in Wei
 
@@ -14,13 +16,19 @@ contract TicketVIP is ERC20 {
         string memory symbol,
         uint256 initialSupply) ERC20(name, symbol) {
         _mint(address(this), initialSupply);
+        owner = msg.sender;
     }
 
     function decimals() public view virtual override returns (uint8) {
         return 0;
     }
 
-    function buyTicket(address ticketAddress) external payable {
+    function setTicket(address ticketAddress) external {
+        require(owner == msg.sender);
+        ticket = Ticket(ticketAddress);
+    }
+
+    function buyTicket() external payable {
         // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
@@ -28,7 +36,6 @@ contract TicketVIP is ERC20 {
         require(balanceOf(tx.origin) == 0, "You've already purchased a VIP ticket!");
 
         // check if the sender has already purchased a ticket
-        Ticket ticket = Ticket(ticketAddress);
         require(!ticket.verifyTicket(), "You've already purchased a ticket!");
 
         // check if sender has enough money
@@ -38,7 +45,7 @@ contract TicketVIP is ERC20 {
         _transfer(address(this), tx.origin, 1);
     }
 
-    function upgradeTicket(address ticketAddress) external payable {
+    function upgradeTicket() external payable {
         // check if there are any tickets left
         require(balanceOf(address(this)) > 0, "No tickets left!");
         
@@ -49,7 +56,6 @@ contract TicketVIP is ERC20 {
         require(msg.value == upgradePrice, "Not enough money!");
 
         // check if the sender owns a regular ticket.
-        Ticket ticket = Ticket(ticketAddress);
         require(ticket.verifyTicket(), "You don't have a regular ticket!");
 
         // give back the regular ticket to the Ticket.sol contract

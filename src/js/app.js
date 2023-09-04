@@ -77,9 +77,12 @@ App = {
         App.contracts.TicketVIP.deployed().then(function(instance) {
           TicketVIPInstance = instance;
   
-          return TicketInstance.buyTicket(TicketVIPInstance.address, {from: account, 
+          return TicketInstance.buyTicket({
+            from: account, 
             value: web3.toWei('0.003', 'ether'),
-            gas: 100000});
+            gas: 100000
+          });
+
         }).then(function(result) {
           alert('Purchase Successful!');
           return App.getTicket();
@@ -114,9 +117,11 @@ App = {
         App.contracts.TicketVIP.deployed().then(function(instance) {
           TicketVIPInstance = instance;
   
-          return TicketVIPInstance.buyTicket(TicketInstance.address, {from: account, 
+          return TicketVIPInstance.buyTicket({
+            from: account,
             value: web3.toWei('0.0059', 'ether'),
-            gas: 100000});
+            gas: 100000
+          });
         }).then(function(result) {
           alert('Purchase Successful!');
           return App.getTicket();
@@ -150,9 +155,12 @@ App = {
         App.contracts.TicketVIP.deployed().then(function(instance) {
           TicketVIPInstance = instance;
   
-          return TicketVIPInstance.upgradeTicket(TicketInstance.address, {from: account, 
+          return TicketVIPInstance.upgradeTicket({
+            from: account, 
             value: web3.toWei('0.0029', 'ether'),
-            gas: 100000});
+            gas: 100000
+          });
+
         }).then(function(result) {
           alert('Purchase Successful!');
           return App.getTicket();
