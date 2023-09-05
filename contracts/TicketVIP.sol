@@ -70,8 +70,6 @@ contract TicketVIP is ERC20 {
     }
 
     function verifyTicket(address _address) external view returns (bool) {
-        require(msg.sender == address(ticket) || msg.sender == _address); // only ticket contract or _address can call this function
-
         return balanceOf(_address) == 1;
     }
     
